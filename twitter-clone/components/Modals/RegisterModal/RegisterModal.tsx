@@ -1,20 +1,15 @@
 import Input from "@/components/Input/Input";
-import Modal from "@/components/Modals/Modal/Modal";
+import Modal from "@/components/Modal/Modal";
 import useLoginModal from "@/hooks/useLoginModal"
 import useRegisterModal from "@/hooks/useRegisterModal";
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { toast } from 'react-hot-toast';
 import { signIn } from "next-auth/react";
-interface RegisterModelProps {
 
-}
-
-const RegisterModel: React.FC<RegisterModelProps> = ({
-
-}) => {
-    const loginModel = useLoginModal();
-    const registerModel = useRegisterModal();
+const RegisterModal = () => {
+    const loginModal = useLoginModal();
+    const registerModal = useRegisterModal();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,7 +26,9 @@ const RegisterModel: React.FC<RegisterModelProps> = ({
                 password,
                 name,
                 username
-            })
+            });
+
+            setIsLoading(false)
             
             toast.success('Account created');
 
@@ -40,22 +37,21 @@ const RegisterModel: React.FC<RegisterModelProps> = ({
                 password
             });
 
-            registerModel.onClose();
+            registerModal.onClose();
         } catch (error) {
-            console.log(error);
             toast.error('Something went wrong');
         } finally {
             setIsLoading(false);
         }
-    },[email, name, password, registerModel, username]);
+    },[email, name, password, registerModal, username]);
 
     const onToggle = useCallback(() => {
         if (isLoading) {
             return;
         }
-        registerModel.onClose();
-        loginModel.onOpen();
-    },[isLoading, registerModel, loginModel]);
+        registerModal.onClose();
+        loginModal.onOpen();
+    },[isLoading, registerModal, loginModal]);
 
     const bodyContent = (
         <div className="flex flex-col gap-4">
@@ -99,14 +95,14 @@ const RegisterModel: React.FC<RegisterModelProps> = ({
   return (
     <Modal 
         disabled={isLoading}
-        isOpen={registerModel.isOpen}
+        isOpen={registerModal.isOpen}
         title="Create an account"
         actionLabel="Register"
-        onClose={registerModel.onClose}
+        onClose={registerModal.onClose}
         onSubmit={onSubmit}
         body={bodyContent}
         footer={footerContent}/>
   )
 }
 
-export default RegisterModel
+export default RegisterModal

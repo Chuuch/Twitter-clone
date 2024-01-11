@@ -1,26 +1,21 @@
 import Input from "@/components/Input/Input";
-import Modal from "@/components/Modals/Modal/Modal";
+import Modal from "@/components/Modal/Modal";
 import useLoginModal from "@/hooks/useLoginModal"
 import { useCallback, useState } from "react";
-import RegisterModel from "../RegisterModel/RegisterModel";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import { signIn } from "next-auth/react";
+import { toast } from 'react-hot-toast';
 
-interface LoginModelProps {
 
-}
-
-const LoginModel: React.FC<LoginModelProps> = ({
-
-}) => {
-    const loginModel = useLoginModal();
-    const registerModel = useRegisterModal();
+const LoginModal = () => {
+    const loginModal = useLoginModal();
+    const registerModal = useRegisterModal();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const onSubmit = useCallback( async () => {
+    const onSubmit = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -29,21 +24,20 @@ const LoginModel: React.FC<LoginModelProps> = ({
                 password
             });
 
-            loginModel.onClose();
+            toast.success('Logged in');
+
+            loginModal.onClose();
         } catch (error) {
-            console.log(error);
+            toast.error('Something went wrong');
         } finally {
             setIsLoading(false);
         }
-    },[loginModel, email, password]);
+    },[loginModal, email, password]);
 
     const onToggle = useCallback(() => {
-        if (isLoading) {
-            return;
-        }
-        loginModel.onClose();
-        registerModel.onOpen();
-    },[isLoading, registerModel, loginModel])
+        loginModal.onClose();
+        registerModal.onOpen();
+    },[registerModal, loginModal]);
 
     const bodyContent = (
         <div className="flex flex-col gap-4">
@@ -77,14 +71,14 @@ const LoginModel: React.FC<LoginModelProps> = ({
   return (
     <Modal 
         disabled={isLoading}
-        isOpen={loginModel.isOpen}
+        isOpen={loginModal.isOpen}
         title="Login"
         actionLabel="Sign in"
-        onClose={loginModel.onClose}
+        onClose={loginModal.onClose}
         onSubmit={onSubmit}
         body={bodyContent}
         footer={footerContent}/>
   )
 }
 
-export default LoginModel
+export default LoginModal
