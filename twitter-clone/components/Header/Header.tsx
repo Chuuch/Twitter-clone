@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({
                     className='cursor-pointer hover:opacity-70 transition'/>
                 )
             }
-            <h1 className="text-white text-xl font-semibold">
+            <h1 className="text-white text-xl font-semibold capitalize">
                 {label}
             </h1>
         </div>

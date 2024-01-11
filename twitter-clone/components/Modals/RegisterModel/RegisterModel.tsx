@@ -2,8 +2,10 @@ import Input from "@/components/Input/Input";
 import Modal from "@/components/Modals/Modal/Modal";
 import useLoginModal from "@/hooks/useLoginModal"
 import useRegisterModal from "@/hooks/useRegisterModal";
-import { use, useCallback, useState } from "react";
-
+import axios from "axios";
+import { useCallback, useState } from "react";
+import { toast } from 'react-hot-toast';
+import { signIn } from "next-auth/react";
 interface RegisterModelProps {
 
 }
@@ -23,13 +25,29 @@ const RegisterModel: React.FC<RegisterModelProps> = ({
     const onSubmit = useCallback( async () => {
         try {
             setIsLoading(true);
+
+            await axios.post('/api/register', {
+                email,
+                password,
+                name,
+                username
+            })
+            
+            toast.success('Account created');
+
+            signIn('credentials', {
+                email,
+                password
+            });
+
             registerModel.onClose();
         } catch (error) {
             console.log(error);
+            toast.error('Something went wrong');
         } finally {
             setIsLoading(false);
         }
-    },[registerModel]);
+    },[email, name, password, registerModel, username]);
 
     const onToggle = useCallback(() => {
         if (isLoading) {
@@ -58,6 +76,7 @@ const RegisterModel: React.FC<RegisterModelProps> = ({
                 disabled={isLoading}/>
             <Input 
                 placeholder="Password"
+                type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 disabled={isLoading}/>
