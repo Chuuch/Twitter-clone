@@ -4,6 +4,7 @@ import useLoginModal from "@/hooks/useLoginModal"
 import { useCallback, useState } from "react";
 import RegisterModel from "../RegisterModel/RegisterModel";
 import useRegisterModal from "@/hooks/useRegisterModal";
+import { signIn } from "next-auth/react";
 
 interface LoginModelProps {
 
@@ -22,13 +23,19 @@ const LoginModel: React.FC<LoginModelProps> = ({
     const onSubmit = useCallback( async () => {
         try {
             setIsLoading(true);
+
+            await signIn('credentials', {
+                email,
+                password
+            });
+
             loginModel.onClose();
         } catch (error) {
             console.log(error);
         } finally {
             setIsLoading(false);
         }
-    },[loginModel]);
+    },[loginModel, email, password]);
 
     const onToggle = useCallback(() => {
         if (isLoading) {
