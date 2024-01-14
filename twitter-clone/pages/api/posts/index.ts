@@ -22,15 +22,17 @@ export default async function handler(
                 }
             });
 
-            return res.status(201).json(post);
+            return res.status(200).json(post);
         }
 
         if (req.method === 'GET') {
             const { userId } = req.body;
 
+            console.log({ userId });
+
             let posts;
 
-            if (userId && typeof userId !== 'string') {
+            if (userId && typeof userId === 'string') {
                 posts = await prisma.post.findMany({
                     where: {
                         userId
