@@ -1,5 +1,7 @@
 # Xitter - Twitter Clone Application
 
+Visit project - https://xitter.onrender.com
+
 ![Screenshot 2024-01-13 at 22 39 20](https://github.com/Chuuch/Xitter/assets/78451418/c6711f30-d699-4ee3-8c8e-86dedaf4351c)
 
 Xitter is a full-stack Twitter clone application built with modern web technologies, including React, TypeScript, Tailwind CSS, Next.js, Zustand, and JWT authentication. This project aims to provide a scalable and feature-rich platform for users to share thoughts, engage in discussions, and connect with others in a familiar social media environment.
